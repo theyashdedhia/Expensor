@@ -1,17 +1,17 @@
 import expess from 'express';
-import mongoose from 'mongoose';
+import connect from './database/mongodb.js'
 import cors from 'cors';
+import bodyParser from 'body-parser';
+import TransactionRoutes from './routes/transactions.js'
 
 const app = expess();
-const PORT = 8000;
+const PORT = 4000;
 
-app.use(cors);
+app.use(cors());
+app.use(bodyParser.json());
+app.use('/transaction', TransactionRoutes)
 
-await mongoose.connect(
-    "mongodb+srv://theyashdedhia:mongopass@cluster0.qq9tdnd.mongodb.net/?retryWrites=true&w=majority"
-)
-.then(()=>console.log("MongoDb Connected Successfully"))
-.catch((err)=> console.log(err));
+await connect();
 
 app.get('/', (req, res)=>{
     res.send("Hello World")
